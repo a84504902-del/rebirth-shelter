@@ -1,0 +1,606 @@
+{
+ "W": 1536,
+ "H": 1024,
+ "spots": [
+  {
+   "id": "junk",
+   "name": "门口杂物堆",
+   "tier": 1,
+   "lane": 2,
+   "x": 723,
+   "y": 654,
+   "land": true,
+   "sea": 5
+  },
+  {
+   "id": "forest",
+   "name": "后山树林",
+   "tier": 1,
+   "lane": 2,
+   "x": 701,
+   "y": 641,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "river",
+   "name": "上游河湾",
+   "tier": 1,
+   "lane": 2,
+   "x": 709,
+   "y": 649,
+   "land": true,
+   "sea": 4
+  },
+  {
+   "id": "quarry",
+   "name": "碎石坡",
+   "tier": 1,
+   "lane": 2,
+   "x": 693,
+   "y": 628,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "station",
+   "name": "旧加油站",
+   "tier": 1,
+   "lane": 2,
+   "x": 695,
+   "y": 638,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "market",
+   "name": "废弃超市",
+   "tier": 1,
+   "lane": 2,
+   "x": 721,
+   "y": 653,
+   "land": true,
+   "sea": 5
+  },
+  {
+   "id": "trail",
+   "name": "兽径",
+   "tier": 1,
+   "lane": 2,
+   "x": 698,
+   "y": 626,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "coalSeam",
+   "name": "露头煤层",
+   "tier": 2,
+   "lane": 2,
+   "x": 687,
+   "y": 631,
+   "land": true,
+   "sea": 2
+  },
+  {
+   "id": "ironMine",
+   "name": "铁矿洞",
+   "tier": 2,
+   "lane": 2,
+   "x": 686,
+   "y": 648,
+   "land": true,
+   "sea": 2
+  },
+  {
+   "id": "copperMine",
+   "name": "铜矿脉",
+   "tier": 2,
+   "lane": 2,
+   "x": 693,
+   "y": 621,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "sulfurPit",
+   "name": "硫磺坑",
+   "tier": 3,
+   "lane": 2,
+   "x": 654,
+   "y": 575,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "niterBed",
+   "name": "硝石床",
+   "tier": 3,
+   "lane": 2,
+   "x": 695,
+   "y": 595,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "oilField",
+   "name": "废弃油田",
+   "tier": 3,
+   "lane": 2,
+   "x": 590,
+   "y": 539,
+   "land": true,
+   "sea": 4
+  },
+  {
+   "id": "endMine4",
+   "name": "幽能井",
+   "tier": 4,
+   "lane": 2,
+   "x": 520,
+   "y": 496,
+   "land": true,
+   "sea": 5
+  },
+  {
+   "id": "endRelic4",
+   "name": "上古遗迹",
+   "tier": 4,
+   "lane": 2,
+   "x": 528,
+   "y": 479,
+   "land": true,
+   "sea": 6
+  },
+  {
+   "id": "endMine5",
+   "name": "星尘陨坑",
+   "tier": 5,
+   "lane": 2,
+   "x": 630,
+   "y": 342,
+   "land": true,
+   "sea": 12
+  },
+  {
+   "id": "endRelic5",
+   "name": "先驱者基地",
+   "tier": 5,
+   "lane": 2,
+   "x": 654,
+   "y": 333,
+   "land": true,
+   "sea": 13
+  },
+  {
+   "id": "endMine6",
+   "name": "虚空裂隙",
+   "tier": 6,
+   "lane": 2,
+   "x": 672,
+   "y": 291,
+   "land": true,
+   "sea": 15
+  },
+  {
+   "id": "endRelic6",
+   "name": "轨道残骸",
+   "tier": 6,
+   "lane": 2,
+   "x": 701,
+   "y": 285,
+   "land": true,
+   "sea": 16
+  },
+  {
+   "id": "endMine7",
+   "name": "奇点熔炉",
+   "tier": 7,
+   "lane": 2,
+   "x": 958,
+   "y": 290,
+   "land": true,
+   "sea": 19
+  },
+  {
+   "id": "endRelic7",
+   "name": "时间褶皱",
+   "tier": 7,
+   "lane": 2,
+   "x": 986,
+   "y": 305,
+   "land": true,
+   "sea": 20
+  },
+  {
+   "id": "endMine8",
+   "name": "彼岸花园",
+   "tier": 8,
+   "lane": 2,
+   "x": 1160,
+   "y": 434,
+   "land": true,
+   "sea": 24
+  },
+  {
+   "id": "endRelic8",
+   "name": "静默方尖碑",
+   "tier": 8,
+   "lane": 2,
+   "x": 1093,
+   "y": 339,
+   "land": true,
+   "sea": 22
+  },
+  {
+   "id": "endMine9",
+   "name": "终焉矿脉",
+   "tier": 9,
+   "lane": 2,
+   "x": 1229,
+   "y": 520,
+   "land": true,
+   "sea": 20
+  },
+  {
+   "id": "endRelic9",
+   "name": "尽头观测站",
+   "tier": 9,
+   "lane": 2,
+   "x": 1228,
+   "y": 607,
+   "land": true,
+   "sea": 20
+  },
+  {
+   "id": "endMine10",
+   "name": "幽能井",
+   "tier": 10,
+   "lane": 2,
+   "x": 1177,
+   "y": 809,
+   "land": true,
+   "sea": 14
+  },
+  {
+   "id": "endRelic10",
+   "name": "上古遗迹",
+   "tier": 10,
+   "lane": 2,
+   "x": 1238,
+   "y": 719,
+   "land": true,
+   "sea": 19
+  },
+  {
+   "id": "endMine11",
+   "name": "星尘陨坑",
+   "tier": 11,
+   "lane": 2,
+   "x": 1112,
+   "y": 917,
+   "land": true,
+   "sea": 7
+  },
+  {
+   "id": "endRelic11",
+   "name": "先驱者基地",
+   "tier": 11,
+   "lane": 2,
+   "x": 1081,
+   "y": 936,
+   "land": true,
+   "sea": 6
+  },
+  {
+   "id": "endMine12",
+   "name": "虚空裂隙",
+   "tier": 12,
+   "lane": 2,
+   "x": 1172,
+   "y": 922,
+   "land": true,
+   "sea": 7
+  },
+  {
+   "id": "endRelic12",
+   "name": "轨道残骸",
+   "tier": 12,
+   "lane": 2,
+   "x": 1089,
+   "y": 975,
+   "land": true,
+   "sea": 4
+  },
+  {
+   "id": "z4Safe",
+   "name": "废弃观测站",
+   "tier": 4,
+   "lane": 0,
+   "x": 709,
+   "y": 759,
+   "land": true,
+   "sea": 4
+  },
+  {
+   "id": "z4Rich",
+   "name": "富矿脉",
+   "tier": 4,
+   "lane": 1,
+   "x": 694,
+   "y": 637,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "z4Relic",
+   "name": "上古遗迹",
+   "tier": 4,
+   "lane": 2,
+   "x": 549,
+   "y": 447,
+   "land": true,
+   "sea": 7
+  },
+  {
+   "id": "z5Safe",
+   "name": "荒原补给点",
+   "tier": 5,
+   "lane": 0,
+   "x": 640,
+   "y": 719,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "z5Rich",
+   "name": "深层矿洞",
+   "tier": 5,
+   "lane": 1,
+   "x": 494,
+   "y": 485,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "z5Relic",
+   "name": "先驱者基地",
+   "tier": 5,
+   "lane": 2,
+   "x": 566,
+   "y": 377,
+   "land": true,
+   "sea": 8
+  },
+  {
+   "id": "z6Safe",
+   "name": "裂界入口",
+   "tier": 6,
+   "lane": 0,
+   "x": 494,
+   "y": 516,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "z6Rich",
+   "name": "坍缩矿井",
+   "tier": 6,
+   "lane": 1,
+   "x": 507,
+   "y": 373,
+   "land": true,
+   "sea": 6
+  },
+  {
+   "id": "z6Relic",
+   "name": "轨道残骸",
+   "tier": 6,
+   "lane": 2,
+   "x": 666,
+   "y": 292,
+   "land": true,
+   "sea": 14
+  },
+  {
+   "id": "z7Safe",
+   "name": "静默哨所",
+   "tier": 7,
+   "lane": 0,
+   "x": 455,
+   "y": 375,
+   "land": true,
+   "sea": 3
+  },
+  {
+   "id": "z7Rich",
+   "name": "逆流矿带",
+   "tier": 7,
+   "lane": 1,
+   "x": 551,
+   "y": 296,
+   "land": true,
+   "sea": 9
+  },
+  {
+   "id": "z7Relic",
+   "name": "时间褶皱",
+   "tier": 7,
+   "lane": 2,
+   "x": 840,
+   "y": 252,
+   "land": true,
+   "sea": 16
+  },
+  {
+   "id": "z8Safe",
+   "name": "干涸绿洲",
+   "tier": 8,
+   "lane": 0,
+   "x": 452,
+   "y": 316,
+   "land": true,
+   "sea": 4
+  },
+  {
+   "id": "z8Rich",
+   "name": "白夜矿田",
+   "tier": 8,
+   "lane": 1,
+   "x": 767,
+   "y": 209,
+   "land": true,
+   "sea": 14
+  },
+  {
+   "id": "z8Relic",
+   "name": "静默方尖碑",
+   "tier": 8,
+   "lane": 2,
+   "x": 1078,
+   "y": 325,
+   "land": true,
+   "sea": 21
+  },
+  {
+   "id": "z9Safe",
+   "name": "残骸营地",
+   "tier": 9,
+   "lane": 0,
+   "x": 694,
+   "y": 177,
+   "land": true,
+   "sea": 12
+  },
+  {
+   "id": "z9Rich",
+   "name": "终焉矿脉",
+   "tier": 9,
+   "lane": 1,
+   "x": 1070,
+   "y": 268,
+   "land": true,
+   "sea": 17
+  },
+  {
+   "id": "z9Relic",
+   "name": "尽头观测站",
+   "tier": 9,
+   "lane": 2,
+   "x": 1232,
+   "y": 560,
+   "land": true,
+   "sea": 19
+  },
+  {
+   "id": "z10Safe",
+   "name": "废弃观测站·Ⅱ",
+   "tier": 10,
+   "lane": 0,
+   "x": 962,
+   "y": 171,
+   "land": true,
+   "sea": 11
+  },
+  {
+   "id": "z10Rich",
+   "name": "富矿脉·Ⅱ",
+   "tier": 10,
+   "lane": 1,
+   "x": 1183,
+   "y": 317,
+   "land": true,
+   "sea": 20
+  },
+  {
+   "id": "z10Relic",
+   "name": "上古遗迹·Ⅱ",
+   "tier": 10,
+   "lane": 2,
+   "x": 1267,
+   "y": 641,
+   "land": true,
+   "sea": 17
+  },
+  {
+   "id": "z11Safe",
+   "name": "荒原补给点·Ⅱ",
+   "tier": 11,
+   "lane": 0,
+   "x": 1183,
+   "y": 259,
+   "land": true,
+   "sea": 17
+  },
+  {
+   "id": "z11Rich",
+   "name": "深层矿洞·Ⅱ",
+   "tier": 11,
+   "lane": 1,
+   "x": 1320,
+   "y": 576,
+   "land": true,
+   "sea": 14
+  },
+  {
+   "id": "z11Relic",
+   "name": "先驱者基地·Ⅱ",
+   "tier": 11,
+   "lane": 2,
+   "x": 1195,
+   "y": 849,
+   "land": true,
+   "sea": 11
+  },
+  {
+   "id": "z12Safe",
+   "name": "裂界入口·Ⅱ",
+   "tier": 12,
+   "lane": 0,
+   "x": 1346,
+   "y": 440,
+   "land": true,
+   "sea": 12
+  },
+  {
+   "id": "z12Rich",
+   "name": "坍缩矿井·Ⅱ",
+   "tier": 12,
+   "lane": 1,
+   "x": 1278,
+   "y": 815,
+   "land": true,
+   "sea": 14
+  },
+  {
+   "id": "z12Relic",
+   "name": "轨道残骸·Ⅱ",
+   "tier": 12,
+   "lane": 2,
+   "x": 1180,
+   "y": 916,
+   "land": true,
+   "sea": 7
+  }
+ ],
+ "zones": [
+  {
+   "tier": 1,
+   "name": "家园废墟",
+   "x": 707,
+   "y": 643
+  },
+  {
+   "tier": 2,
+   "name": "旧工业带",
+   "x": 689,
+   "y": 633
+  },
+  {
+   "tier": 3,
+   "name": "能源走廊",
+   "x": 676,
+   "y": 604
+  }
+ ]
+}

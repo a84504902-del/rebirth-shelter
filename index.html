@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>重生避难所</title>
+<link rel="stylesheet" href="css/style.css">
+<script>
+/* ★ v8.48 全局错误捕获：任何 JS 错误直接显示在开场画面上（多设备排查用，不用开 F12） */
+window.onerror = function(msg, src, line, col){
+  try{
+    var box = document.querySelector("#intro .box") || document.body;
+    var p = document.createElement("p");
+    p.style.color = "#d95c5c"; p.style.fontSize = "12px"; p.style.wordBreak = "break-all";
+    p.textContent = "❌ JS错误: " + msg + " @ " + String(src || "").split("/").pop() + ":" + line + ":" + col;
+    box.appendChild(p);
+  }catch(e){}
+};
+window.addEventListener("unhandledrejection", function(e){
+  try{
+    var box = document.querySelector("#intro .box") || document.body;
+    var p = document.createElement("p");
+    p.style.color = "#d95c5c"; p.style.fontSize = "12px"; p.style.wordBreak = "break-all";
+    p.textContent = "❌ 异步错误: " + (e.reason && (e.reason.message || e.reason) || e.reason);
+    box.appendChild(p);
+  }catch(err){}
+});
+</script>
+</head>
+<body>
+
+<!-- 开场 -->
+<div id="intro" style="display:none">
+  <div class="box">
+    <h1>重生 · 第一天</h1>
+    <p style="color:var(--dim);font-size:11px;margin-bottom:10px">v1.0.0</p>
+    <p>你睁开眼，躺在郊区一栋破旧的板房里。上一世的记忆如潮水涌来——天灾、野兽、饥饿，以及最终那个没能熬过去的冬天。</p>
+    <p>现在，整个避难所只有你一个人。你知道周边的树林里有好木料，但碎石坡、废弃超市在哪里，得自己一步步探出来。</p>
+    <p style="color:#e8d9b0">看清目标，探明周边，安排好每一天的日程。日子是一小时一小时过出来的。</p>
+    <button onclick="startGame(false)">开始新的一世</button>
+    <button id="btnContinue" onclick="startGame(true)" style="display:none">继续上一次轮回</button>
+  </div>
+</div>
+
+<!-- 全屏横幅（阶段推进 / 死亡报告） -->
+<div id="banner" class="hidden">
+  <div class="banner-box">
+    <h3 id="bannerTitle"></h3>
+    <div id="bannerBody"></div>
+    <button id="bannerBtn">继续</button>
+  </div>
+</div>
+
+<!-- 浮层提示（越级图纸等） -->
+<div id="toast" class="hidden"></div>
+
+<!-- 顶栏：阶段 / 资源 / 天灾倒计时 -->
+<header>
+  <span class="res agebox" title="当前阶段">
+    🌍 <b id="rAge">求生期</b>
+  </span>
+  <span class="res woundbox" id="woundBox" style="display:none" title="身体状态：受伤会降低外出效率"></span>
+  <span class="res" id="rebirthBox" style="display:none" title="已经历的世数"></span>
+  <span class="res" title="木材：建造与升级的主要材料">🪵 木材 <b class="c-wood" id="rWood">0</b></span>
+  <span class="res" title="石料：加固工事等防御设施用">🪨 石料 <b class="c-stone" id="rStone">0</b></span>
+  <span class="res" title="废金属：工具与拆解装备获得">⚙️ 金属 <b class="c-metal" id="rMetal">0</b></span>
+  <span class="res" title="口粮：只能从箱子/超市获得，每天消耗">🥫 口粮 <b class="c-food" id="rFood">0</b></span>
+  <span class="res" title="水：河湾、雨水收集器或箱子获得">💧 水 <b class="c-water" id="rWater">0</b></span>
+  <span class="res" title="防御力：抵御天灾与野兽">🛡️ 防御 <b id="rDef">0</b></span>
+  <span class="res" title="战力：决定野外遭遇与能去的地方">⚔️ 战力 <b id="rAtk">0</b></span>
+  <span class="res" title="储物箱已占用容量 / 上限（升级储物箱提升，需要图纸）">📦 仓储 <b id="rStore">0/0</b></span>
+  <span class="res" id="rPowerBox" style="display:none" title="电力设施状态">⚡ <b id="rPower">—</b></span>
+  <span class="res" title="游戏内天数">📅 第 <b id="rDay">1</b> 天</span>
+  <span class="res" title="今日运势：每个游戏日自动重抽，影响今天的采集收成（不影响箱子/制作/探索）">🎲 <b id="rFortune">—</b></span>
+  <span class="res" title="游戏内时钟（现实 1 小时 ≈ 游戏 1 天，可调速档）">🕐 <b id="rClock">06:00</b></span>
+  <span class="res" id="chestBadge" title="待开箱子（关掉自动开箱时会累积）" style="display:none">📦 待开 <b id="rChestPending">0</b></span>
+  <span class="res" id="disBadge" style="display:none;cursor:pointer" title="离线期间发生的天灾，点开查看报告" onclick="readDisReport()">📋 <b id="disBadgeTxt"></b></span>
+  <span class="res speedctl" title="时间流速：挂机快慢">
+    <span style="font-size:11px;color:var(--dim)">速度</span>
+    <button class="spd" data-mul="1" onclick="setSpeed(1)">1×</button>
+    <button class="spd" data-mul="2" onclick="setSpeed(2)">2×</button>
+    <button class="spd" data-mul="4" onclick="setSpeed(4)">4×</button>
+    <button class="spd" data-mul="8" onclick="setSpeed(8)">8×</button>
+  </span>
+    <span class="res" title="世界地图：看主角在地图上跑到哪、走过什么路线（含离线回放）">
+    <button class="spd" onclick="toggleMap()">🗺️ 地图</button>
+  </span>
+  <span class="res" id="autoOpenBox" title="自动开箱：挂机时战利品直接进日志">
+    <button class="spd" id="btnAutoOpen" onclick="toggleAutoOpen()">自动开箱：开</button>
+  </span>
+  <div id="disaster">
+    <div style="font-size:12px;color:var(--dim)" id="disName">下一场天灾</div>
+    <div id="disTimer">--</div>
+  </div>
+</header>
+<div id="mapOverlay" class="map-overlay" style="display:none">
+  <div class="map-head">
+    <span class="map-title">🗺️ 世界地图 <b id="mapTitle">· 挂机运行视图</b></span>
+    <span class="map-live" id="mapLive">运行中</span>
+    <button class="mini" onclick="mapReplayLive()">回到现在</button>
+    <button class="mini" onclick="toggleMap(false)">关闭 ✕</button>
+  </div>
+  <div class="map-body">
+    <div class="map-canvas" id="mapSvg"></div>
+    <div class="map-side">
+      <div class="map-stats" id="mapStats"></div>
+      <div class="map-replay">
+        <div class="map-replay-head">离线回放 <span class="text-dim" id="mapReplayDay">—</span></div>
+        <input type="range" id="mapSlider" min="0" max="0" value="0" oninput="mapReplayTo(this.value)">
+        <div class="map-replay-btns">
+          <button class="mini" id="mapPlayBtn" onclick="mapReplayToggle()">▶ 播放</button>
+          <button class="mini" onclick="mapReplayLive()">⏭ 回到现在</button>
+        </div>
+        <div class="map-replay-info" id="mapReplayInfo">拖动滑块，回看这段时间它跑过的地方。</div>
+      </div>
+      <div class="map-events" id="mapEvents"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- v8.24 页面导航：把越拉越长的「制作」「灾史」拆成独立页；v8.40 提为所有页面共享的顶部导航 -->
+<nav class="pagenav" id="pageNav">
+  <button class="pb" id="pb-base" onclick="setPage('base')">🏠 基地</button>
+  <button class="pb" id="pb-bench" onclick="setPage('bench')">🛠️ 工作台<b class="pbadge" id="pbBenchN" style="display:none"></b></button>
+  <button class="pb" id="pb-inv" onclick="setPage('inv')">🎒 库存</button>
+  <button class="pb" id="pb-history" onclick="setPage('history')">📜 灾史<b class="pbadge" id="pbHistoryN" style="display:none"></b></button>
+</nav>
+
+<!-- 基地页（v8.33）：上下布局 — fabDock / mapMain / savebar 纵向排列 -->
+<main class="page" id="page-base">
+
+  <!-- 顶部：基地操作按钮坞 -->
+  <div class="fabdock" id="fabDock">
+    <button class="fab" id="fab-info" onclick="togglePop('info')" aria-expanded="false">
+      <span class="fname">📊 地图</span><span class="fsum" id="fsum-info">轨迹 / 事件</span>
+    </button>
+    <button class="fab" id="fab-bld" onclick="togglePop('bld')" aria-expanded="false">
+      <span class="fname">🏭 设施</span><span class="fsum" id="fsum-bld"></span>
+    </button>
+    <button class="fab" id="fab-now" onclick="togglePop('now')" aria-expanded="false">
+      <span class="fname">⏳ 进行中</span><span class="fsum" id="fsum-now"></span>
+    </button>
+    <button class="fab" id="fab-hero" onclick="togglePop('hero')" aria-expanded="false">
+      <span class="fname">🧍 主角</span><span class="fsum" id="fsum-hero"></span>
+    </button>
+    <button class="fab" id="fab-plan" onclick="togglePop('plan')" aria-expanded="false">
+      <span class="fname">📅 日程</span><span class="fsum" id="fsum-plan"></span>
+    </button>
+    <button class="fab" id="fab-chest" onclick="togglePop('chest')" aria-expanded="false">
+      <span class="fname">📦 箱子</span><span class="fsum" id="fsum-chest"></span>
+    </button>
+    <button class="fab" id="fab-log" onclick="togglePop('log')" aria-expanded="false">
+      <span class="fname">📜 日志</span><span class="fsum" id="fsum-log"></span>
+    </button>
+  </div>
+
+  <!-- 中间：地图容器（撑满剩余高度） -->
+  <div class="mapmain" id="mapMain">
+    <div class="mapwrap" id="mapWrap"><div id="mapInlineBg"></div></div>
+    <!-- 左上角极简信息条（跟随地图） -->
+    <div class="mapchip" id="mapChip"></div>
+  </div>
+
+  <!-- 弹出面板（浮在中间地图区；同一时间只开一个） -->
+  <div class="pop" id="pop-info">
+    <div class="pophead"><span>📊 地图信息</span><button class="mini" onclick="togglePop('info')">关闭 ✕</button></div>
+    <div class="popbody" id="mapInfoBody"></div>
+  </div>
+  <div class="pop" id="pop-bld">
+    <div class="pophead"><span>🏭 避难所设施</span><button class="mini" onclick="togglePop('bld')">关闭 ✕</button></div>
+    <div class="popbody"><div id="ageTarget" class="ageTarget"></div><div id="buildings"></div></div>
+  </div>
+  <div class="pop" id="pop-now">
+    <div class="pophead"><span>⏳ 当前进行中</span><button class="mini" onclick="togglePop('now')">关闭 ✕</button></div>
+    <div class="popbody" id="nowPanel"></div>
+  </div>
+  <div class="pop" id="pop-hero">
+    <div class="pophead"><span>🧍 主角</span><button class="mini" onclick="togglePop('hero')">关闭 ✕</button></div>
+    <div class="popbody" id="heroPanel"></div>
+  </div>
+  <div class="pop" id="pop-plan">
+    <div class="pophead"><span>📅 每日日程</span><button class="mini" onclick="togglePop('plan')">关闭 ✕</button></div>
+    <div class="popbody" id="planPanel"></div>
+  </div>
+  <div class="pop" id="pop-chest">
+    <div class="pophead"><span>📦 物资箱</span><button class="mini" onclick="togglePop('chest')">关闭 ✕</button></div>
+    <div class="popbody"><div id="chestPanel"></div><div id="openResult"></div></div>
+  </div>
+  <div class="pop" id="pop-log">
+    <div class="pophead"><span>📜 避难所日志</span><button class="mini" onclick="togglePop('log')">关闭 ✕</button></div>
+    <div class="popbody" id="log"></div>
+  </div>
+
+  <!-- 底部：存档栏 -->
+  <div class="savebar">
+    <div class="row">
+      <span class="text-dim">存档：</span>
+      <button onclick="exportSave()">📤 导出存档</button>
+      <button onclick="document.getElementById('importInput').click()">📥 导入存档</button>
+      <button onclick="restartGame()" title="放弃当前进度，重新开始一世">🔄 重新开始一世</button>
+      <input type="file" id="importInput" accept=".json" style="display:none" onchange="importSave(this)">
+      <span id="fileStatus" class="text-dim">正在读取存档…</span>
+    </div>
+    <div id="saveHint" class="hint"></div>
+  </div>
+
+</main>
+
+<!-- 工作台（全宽，卡片网格排布） -->
+<main class="page" id="page-bench">
+  <div class="col wide">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h2 style="margin:0">🛠️ 制作（选要做什么）</h2>
+      <button class="mini" onclick="setPage('base')" style="margin-left:12px">← 返回基地</button>
+    </div>
+    <!-- 搜索框放在面板外：面板重建时不会被清空/失焦 -->
+    <div class="benchbar">
+      <input id="benchSearch" class="searchinp" type="search" placeholder="搜索配方 / 材料 / 图纸（如：钢、幽能结晶、磁轨炮）"
+             oninput="setBenchQuery(this.value)">
+      <span class="slotchips">
+        <button class="mini" id="bs-all" onclick="setBenchSlot('all')">全部</button>
+        <button class="mini" id="bs-weapon" onclick="setBenchSlot('weapon')">⚔️ 武器</button>
+        <button class="mini" id="bs-armor" onclick="setBenchSlot('armor')">🛡️ 护甲</button>
+        <button class="mini" id="bs-talisman" onclick="setBenchSlot('talisman')">🧿 护符</button>
+      </span>
+      <button class="mini" onclick="benchFoldAll(false)">展开全部</button>
+      <button class="mini" onclick="benchFoldAll(true)">收起全部</button>
+    </div>
+    <div id="workbenchPanel"></div>
+  </div>
+</main>
+
+<!-- 库存与储物（全宽） -->
+<main class="page" id="page-inv">
+  <div class="col wide">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h2 style="margin:0">库存与储物</h2>
+      <button class="mini" onclick="setPage('base')" style="margin-left:12px">← 返回基地</button>
+    </div>
+    <div id="inventoryPanel"></div>
+  </div>
+</main>
+
+<!-- 灾史（全宽，含统计与走势） -->
+<main class="page" id="page-history">
+  <div class="col wide">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h2 style="margin:0">📜 灾史（经历过的天灾）</h2>
+      <button class="mini" onclick="setPage('base')" style="margin-left:12px">← 返回基地</button>
+    </div>
+    <div id="historyPanel"></div>
+  </div>
+</main>
+
+<!-- 脚本按依赖顺序加载：内容表 → 配置 → 阶段表 → 状态 → 引擎 → 掉落 → 存档 → 界面 → 入口 -->
+<script src="js/content/items.js"></script>
+<script src="js/content/recipes.js"></script>
+<script src="js/content/gear.js"></script>
+<script src="js/config.js"></script>
+<script src="js/content/ages.js"></script>
+<script src="js/state.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/loot.js"></script>
+<script src="js/content/endless.js"></script>
+<script src="js/content/map.js"></script>
+<script src="js/content/maps.js"></script>
+<script src="js/save.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

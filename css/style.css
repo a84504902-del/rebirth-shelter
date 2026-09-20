@@ -1,0 +1,406 @@
+/* 重生避难所 · 样式表 */
+:root{
+  --bg:#121418; --panel:#1a1d23; --panel2:#22262e; --line:#2e333d;
+  --txt:#d8dbe2; --dim:#8a90a0;
+  --wood:#b08968; --metal:#8aa2c0; --food:#7fb069; --water:#6aa8c9; --stone:#a8a29a;
+  --r0:#c8ccd4; --r1:#5aa7e8; --r2:#e8b84a; --r3:#e86a3a;
+  --ok:#6dbf6d; --bad:#d95c5c; --warn:#e8b84a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font:14px/1.6 "Microsoft YaHei",system-ui,sans-serif;padding:12px}
+
+/* 开场遮罩 */
+#intro{position:fixed;inset:0;background:rgba(10,11,14,.96);display:flex;align-items:center;justify-content:center;z-index:10}
+#intro .box{max-width:520px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:28px}
+#intro h1{font-size:20px;margin-bottom:14px;color:#e8d9b0}
+#intro p{color:var(--dim);margin-bottom:10px}
+#intro button{margin-top:10px}
+
+/* 通用控件 */
+button{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:13px}
+button:hover:not(:disabled){border-color:#5aa7e8;color:#fff}
+button:disabled{opacity:.4;cursor:default}
+select{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:3px 6px;font-size:12.5px;min-width:170px;cursor:pointer}
+select:hover{border-color:#5aa7e8}
+
+/* 顶栏 */
+header{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px;font-size:13px}
+header .res{font-size:13px}
+header .res b{font-size:13px}
+header .res span:first-child{font-size:14px}
+.c-wood{color:var(--wood)} .c-metal{color:var(--metal)} .c-food{color:var(--food)} .c-water{color:var(--water)} .c-stone{color:var(--stone)}
+#disaster{margin-left:auto;text-align:right}
+#disTimer{font-size:18px;font-weight:bold;color:var(--warn)}
+#disTimer.danger{color:var(--bad)}
+
+/* 主布局 */
+main{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+/* 内容卡片：v8.40 统一为半透明深底（与基地页 header/fabdock 同风格） */
+.col{background:rgba(20,20,19,.88);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-height:300px}
+.col h2{font-size:13.5px;color:#e8d9b0;margin-bottom:10px;font-weight:500;border-bottom:1px solid var(--line);padding-bottom:6px}
+
+/* 存档栏 */
+.savebar{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:12px;font-size:12.5px}
+.savebar .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.savebar .hint{color:var(--dim);font-size:11.5px;margin-top:6px}
+
+/* 设施 */
+.bld{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.bld.locked{opacity:.55}
+.bld .row1{display:flex;justify-content:space-between;align-items:center}
+.bld .name{font-weight:500}
+.bld .lv{color:var(--dim);font-size:12px}
+.bld .eff{font-size:12px;color:var(--dim);margin:2px 0 6px}
+.bld button{font-size:12px;padding:3px 10px}
+
+/* 物资箱 */
+.chestrow{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.chestrow .cnt{font-size:13px}
+.tag{display:inline-block;padding:1px 8px;border-radius:6px;font-size:12px;border:1px solid var(--line)}
+.t-w{background:#2a2417;color:#d8b46a}
+.t-i{background:#1d2430;color:#9ab4d0}
+.t-c{background:#2a1d24;color:#d09ac0}
+#openResult{background:#14161b;border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:13px;min-height:60px;max-height:180px;overflow-y:auto}
+
+/* 装备品质 */
+.r0{color:var(--r0)} .r1{color:var(--r1)} .r2{color:var(--r2)} .r3{color:var(--r3);font-weight:bold}
+
+/* 日志 */
+#log{font-size:12.5px;max-height:560px;overflow-y:auto}
+#log p{padding:3px 0;border-bottom:1px dashed #232830;color:var(--dim)}
+#log p.good{color:var(--ok)} #log p.bad{color:var(--bad)} #log p.warn{color:var(--warn)}
+
+/* 主角面板 */
+.eqline{font-size:12.5px;padding:3px 0;border-bottom:1px dashed #232830}
+.statrow{display:flex;justify-content:space-between;font-size:13px;padding:2px 0;align-items:center;gap:8px}
+.statrow b{color:#e8d9b0}
+.bar{background:#14161b;border:1px solid var(--line);border-radius:5px;height:10px;overflow:hidden}
+.bar > i{display:block;height:100%}
+.planrow{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding:3px 0}
+.planrow .lbl{color:var(--dim);flex-shrink:0;margin-right:6px}
+.mini{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:1px 8px;font-size:11px;cursor:pointer}
+.text-dim{color:var(--dim)}
+.text-bad{color:var(--bad)}
+.text-ok{color:var(--ok)}
+
+/* 库存面板 */
+.invrow{display:flex;justify-content:space-between;font-size:12.5px;padding:2px 0;border-bottom:1px dashed #232830}
+.invrow b{color:#e8d9b0}
+
+/* 工作台 */
+.rec{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:6px}
+.rec.locked{opacity:.6}
+.rec .row1{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.rec .name{font-weight:500}
+.rec .lv{color:var(--dim);font-size:11px}
+.rec .eff{font-size:11.5px;color:var(--dim);margin-top:2px}
+.crafting{background:#1d2430;border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:8px;font-size:12.5px}
+
+/* ============================================================
+ * v7 新增：阶段 / 生死 / 库存整理 / 横幅
+ * ============================================================ */
+
+/* 顶栏：阶段与状态 */
+.agebox b{color:#e8d9b0}
+.woundbox{color:var(--bad)}
+.woundbox.dying{background:#3a1010;border:1px solid var(--bad);border-radius:6px;padding:2px 8px;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+
+/* 设施面板顶部的阶段目标 */
+.ageTarget{font-size:12px;color:var(--dim);background:var(--panel2);border:1px dashed var(--line);border-radius:8px;padding:6px 9px;margin-bottom:8px;line-height:1.7}
+.ageTarget .done{color:var(--ok)}
+
+/* 濒死警告 */
+.dying{background:#2a0f0f;border:1px solid var(--bad);border-radius:8px;padding:6px 9px;margin:5px 0;font-size:12px;color:#ffb4b4;line-height:1.55}
+
+/* 库存：容量条 */
+.capwrap{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:8px}
+
+/* 物资箱行 */
+.chestrow{display:flex;align-items:center;gap:7px;font-size:12.5px;padding:4px 0;border-bottom:1px dashed #232830;flex-wrap:wrap}
+.chestrow .ch-t{min-width:64px}
+.chestrow .cnt{color:#e8d9b0;font-weight:600;min-width:22px}
+
+/* 全屏横幅（阶段推进 / 死亡报告） */
+#banner{position:fixed;inset:0;z-index:50;background:rgba(5,5,8,.88);display:flex;align-items:center;justify-content:center;padding:20px}
+#banner.hidden{display:none}
+.banner-box{max-width:540px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 26px;box-shadow:0 0 50px rgba(120,40,10,.35)}
+.banner-box h3{margin:0 0 12px;font-size:22px;letter-spacing:3px;color:#e8b04a}
+.banner-box h3.death{color:#e05a5a}
+.banner-box h3.age{color:#8fd18f}
+.banner-box p{margin:5px 0;font-size:13px;line-height:1.8;color:#c9cfd8}
+.banner-box button{margin-top:16px;padding:9px 30px;font-size:14px;letter-spacing:2px;cursor:pointer;background:linear-gradient(#3a2a12,#241a0a);color:#f0d0a0;border:1px solid #6a5a3a;border-radius:8px}
+.banner-box button:hover{background:linear-gradient(#5a3f18,#33240e)}
+
+/* 浮层提示（越级图纸等大发现） */
+#toast{position:fixed;right:22px;bottom:22px;z-index:60;max-width:340px;background:#2a1f0a;border:1px solid #a88a3a;border-radius:10px;padding:11px 15px;box-shadow:0 6px 26px rgba(0,0,0,.6)}
+#toast.hidden{display:none}
+.toast-t{color:#f0d0a0;font-size:13.5px;font-weight:600;margin-bottom:4px}
+.toast-b{color:#c9b98f;font-size:12px;line-height:1.65}
+
+/* 地点一览：威胁可视化 */
+.spotrow{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:5px 8px;margin-bottom:4px;font-size:12px}
+.spotrow.blocked{opacity:.6;border-color:#5a2a2a}
+.spotrow .l1{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.spotrow .l2{color:var(--dim);font-size:10.8px;line-height:1.55;margin-top:2px}
+.spot-warn{color:#e8b04a}
+
+/* 分批丢弃按钮组 */
+.discard-btns{display:inline-flex;gap:3px;margin-left:4px}
+.discard-btns .mini{padding:0 6px;font-size:10.5px;line-height:1.6}
+.discard-btns .mini.danger{border-color:#5a2a2a;color:#d98a8a}
+.discard-btns .mini.danger:hover{background:#3a1a1a}
+
+/* 爆仓腾空间 */
+.freeroom{background:#241a1a;border:1px solid #5a2a2a;border-radius:8px;padding:7px 9px;margin-bottom:8px}
+.freeroom .fr-t{font-size:11.5px;color:#e8b0b0;margin-bottom:4px}
+.freeroom .invrow{border-bottom:1px dashed #3a2525}
+
+/* 徒手制作提示 */
+.handnote{background:#1d2430;border:1px dashed #4a5568;border-radius:8px;padding:7px 9px;margin-bottom:8px;font-size:11.8px;color:#c9cfd8;line-height:1.7}
+.handnote b{color:#e8d9b0}
+
+/* ⏳ 当前进行中 */
+.nowhead{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;margin-bottom:5px}
+.nowhead b{color:#e8d9b0;font-weight:600}
+.nowbar{background:#14161b;border:1px solid var(--line);border-radius:5px;height:11px;overflow:hidden}
+.nowbar > i{display:block;height:100%;background:linear-gradient(90deg,#3a6a4a,#5aa86a);transition:width .4s linear}
+.nowbar.small{height:8px}
+.nowbar.small > i{background:linear-gradient(90deg,#5a4a1a,#c9a227)}
+.nowmeta{display:flex;justify-content:space-between;font-size:10.8px;margin-top:3px;gap:8px}
+.nowsub{display:flex;justify-content:space-between;align-items:baseline;font-size:11.8px;margin-top:8px;gap:8px;flex-wrap:wrap}
+.nowsub b{color:#e8d9b0}
+.nowgain{font-size:11.5px;color:#c9cfd8;margin-top:6px;padding-top:5px;border-top:1px dashed #232830;line-height:1.6}
+
+/* 制作线槽位 */
+.slotsbar{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-bottom:8px}
+.slotcells{display:flex;gap:4px;margin-top:5px}
+.slotcells > i{flex:1;height:9px;border-radius:3px;background:#14161b;border:1px solid #2a2f38}
+.slotcells > i.on{background:linear-gradient(90deg,#5a4a1a,#c9a227);border-color:#8a7220}
+.slotcells > i.free{background:#1d2430;border-color:#3d4757}
+.slotcells > i.lock{background:#1a1416;border-color:#3a2020;opacity:.55}
+.mini.danger{border-color:#5a2a2a;color:#d98a8a}
+.mini.danger:hover{background:#3a1a1a}
+
+/* 游戏时钟 */
+#rClock{font-variant-numeric:tabular-nums;letter-spacing:.5px;color:#e8d9b0}
+#disTimer{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* 顶栏速档控制 */
+.speedctl{display:flex;align-items:center;gap:3px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:2px 6px}
+.speedctl .spd{font-size:11px;padding:2px 6px;line-height:1.2;min-width:26px;border:1px solid var(--line);background:transparent;color:var(--dim)}
+.speedctl .spd:hover{border-color:var(--accent)}
+.speedctl .spd.on{background:var(--accent);color:#10131a;border-color:var(--accent);font-weight:700}
+#chestBadge{background:#2a1f12;border:1px solid #5a3f1a;color:#e8c98a}
+#autoOpenBox .spd{font-size:11px;padding:2px 8px;border:1px solid var(--line);background:transparent;color:var(--dim)}
+#autoOpenBox .spd.on{border-color:var(--accent);color:var(--accent)}
+
+/* 库存页签（v7.14：可点击的分类按钮——之前是裸文本，完全看不出能点） */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px}
+.tab{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:4px 14px;font-size:12.5px;cursor:pointer;color:var(--dim);user-select:none}
+.tab:hover{border-color:#5aa7e8;color:var(--txt)}
+.tab.on{background:#2b3b4e;border-color:#5aa7e8;color:#fff}
+.sorts{font-size:11.5px;color:var(--dim);margin:0 0 8px;display:flex;align-items:center;gap:6px}
+.sbtn{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:2px 10px;font-size:11.5px;cursor:pointer;color:var(--dim);user-select:none}
+.sbtn:hover{border-color:#5aa7e8;color:var(--txt)}
+.sbtn.on{background:#2b3b4e;border-color:#5aa7e8;color:#fff}
+
+/* v8.7c 缺料明示：不够的材料标红 */
+b.danger, span.danger{color:var(--bad)}
+
+/* v8.10 批量制作数量控件：输入框 + ±1/±10/±100 + 做满 */
+.qtybox{display:inline-flex;align-items:center;gap:3px;margin-right:6px;flex-wrap:wrap}
+.qtybox .mini{padding:1px 5px;font-size:10.5px}
+.qtybox .qtyinp{width:64px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:1px 4px;font-size:12px;text-align:center}
+
+/* ===== v8.15 世界地图浮层（脱机挂视图） ===== */
+.map-overlay{position:fixed;inset:0;z-index:60;background:rgba(12,12,11,.94);display:flex;flex-direction:column;padding:14px 18px;gap:10px}
+.map-head{display:flex;align-items:center;gap:12px;font-size:14px}
+.map-title{font-weight:500}
+.map-live{font-size:12px;padding:1px 8px;border-radius:6px;background:rgba(29,158,117,.18);color:#5DCAA5}
+.map-live.replay{background:rgba(239,159,39,.18);color:#FAC775}
+.map-body{display:flex;gap:14px;flex:1;min-height:0}
+.map-canvas{flex:1;min-width:0;overflow:hidden;border-radius:12px}
+.map-side{width:300px;flex:0 0 300px;display:flex;flex-direction:column;gap:10px;overflow:auto}
+.map-stats{background:var(--panel2);border-radius:10px;padding:10px 12px}
+.map-stat{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
+.map-stat span{color:var(--dim)}
+.map-replay{background:var(--panel2);border-radius:10px;padding:10px 12px}
+.map-replay-head{font-size:12.5px;margin-bottom:6px}
+.map-replay input[type=range]{width:100%}
+.map-replay-btns{display:flex;gap:6px;margin-top:6px}
+.map-replay-info{font-size:11.5px;color:var(--dim);margin-top:6px;line-height:1.5}
+.map-events{background:var(--panel2);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.map-event{font-size:12px;line-height:1.5}
+
+/* ===== v8.16 页面内实时地图带 ===== */
+.mapband{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px 12px;margin-bottom:12px}
+.mapband-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;margin-bottom:8px}
+.mapband-ctl{display:inline-flex;align-items:center;gap:6px}
+.mapband-body{display:flex;gap:12px;height:400px}
+.mapband-map{flex:1;min-width:0;min-height:0}
+.mapband-map svg{height:100%;width:100%}
+.mapband-side{width:270px;flex:0 0 270px;display:flex;flex-direction:column;gap:8px;overflow:auto}
+.mapband-card{background:var(--panel2);border-radius:10px;padding:9px 11px}
+.mapband-cardhead{font-size:12px;color:var(--dim);margin-bottom:5px}
+@media(max-width:1100px){.mapband-body{height:340px;flex-direction:column}.mapband-side{width:auto;flex:0 0 auto;flex-direction:row;overflow:visible}.mapband-card{flex:1}}
+
+/* v8.17 区域标签（日程地点一览用） */
+.zonechip{display:inline-block;font-size:10.5px;padding:0 5px;margin-right:5px;border-radius:5px;background:rgba(127,119,221,.16);color:#AFA9EC}
+
+/* ===== v8.24 页面切换（基地 / 工作台 / 库存 / 灾史） ===== */
+.pagenav{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.pagenav .pb{background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:9px;padding:6px 13px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.pagenav .pb:hover{color:var(--txt);border-color:#3f3f3c}
+.pagenav .pb.on{background:var(--panel2);color:var(--txt);border-color:#56564f;font-weight:500}
+.pagenav .pb .pbadge{font-size:10px;line-height:1;padding:3px 6px;border-radius:9px;background:rgba(29,158,117,.2);color:#5DCAA5;font-weight:500}
+.pagenav .pb .pbadge.warn{background:rgba(239,159,39,.2);color:#FAC775}
+main.page{display:none}
+main.page.on{display:block}
+main.page .col.wide{grid-column:1 / -1;min-height:auto}
+@media(max-width:900px){main.page.on{grid-template-columns:1fr}}
+
+/* 工作台全宽后：卡片走自适应网格，分组标题跨列 */
+#workbenchPanel{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:8px 12px;align-items:start}
+#workbenchPanel>.slotsbar,
+#workbenchPanel>.handnote,
+#workbenchPanel>.crafting,
+#workbenchPanel>.recgroup{grid-column:1 / -1}
+#workbenchPanel .rec{align-self:start}
+#workbenchPanel .recgroup{font-size:11.5px;color:var(--dim);margin:8px 0 3px}
+@media(max-width:760px){#workbenchPanel{grid-template-columns:1fr}}
+
+.hisflt{display:flex;gap:6px;margin-bottom:8px}
+.hisflt .pb{background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:8px;padding:4px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+.hisflt .pb.on{background:var(--panel2);color:var(--txt);border-color:#56564f}
+.hislist{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:8px}
+.hisrow{background:var(--panel2);border-radius:10px;padding:8px 11px;border-left:3px solid var(--line)}
+.hisrow.ok{border-left-color:#1D9E75}
+.hisrow.bad{border-left-color:#A32D2D}
+.hishead{display:flex;align-items:center;gap:8px;font-size:12.5px;margin-bottom:3px}
+.hiswave{color:var(--dim);font-size:11px}
+.hisname{font-weight:500}
+.histag{font-size:10.5px;padding:1px 6px;border-radius:6px}
+.histag.ok{background:rgba(29,158,117,.18);color:#5DCAA5}
+.histag.bad{background:rgba(163,45,45,.22);color:#E98A8A}
+.hisbody{font-size:11.5px;line-height:1.55}
+
+/* ===== v8.24 灾史页 ===== */
+.hiscards{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:10px}
+.hiscard{background:var(--panel2);border-radius:10px;padding:8px 11px;display:flex;flex-direction:column;gap:2px}
+.hiscard span{font-size:11px;color:var(--dim)}
+.hiscard b{font-size:17px;font-weight:500}
+.hisnext{display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between;background:var(--panel2);border-radius:10px;padding:9px 12px;font-size:12.5px;margin-bottom:12px}
+.hischart{background:var(--panel2);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.hisbars{display:flex;align-items:flex-end;gap:6px;height:110px;padding:0 2px}
+.hisbar{flex:1;min-width:0;display:flex;align-items:flex-end;justify-content:center;gap:2px;position:relative;height:96px}
+.hisbar i{display:block;width:45%;border-radius:3px 3px 0 0;min-height:3px}
+.hisbar .bneed{background:#A32D2D}
+.hisbar .bhave{background:#1D9E75}
+.hisbar em{position:absolute;bottom:-16px;font-size:9.5px;font-style:normal;color:var(--dim)}
+.hislegend{display:flex;gap:14px;font-size:11px;margin-top:20px;color:var(--dim)}
+.hislegend .lg-need{color:#E98A8A}
+.hislegend .lg-have{color:#5DCAA5}
+
+/* v8.24 工作台搜索条 */
+.benchbar{display:flex;gap:7px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.searchinp{flex:1;min-width:200px;max-width:420px;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:12.5px;font-family:inherit}
+.searchinp:focus{outline:none;border-color:#56564f}
+.benchsearchhint{font-size:12px;color:var(--dim);margin:2px 0 6px}
+.recgroup[onclick]{cursor:pointer;user-select:none}
+.recgroup[onclick]:hover{color:var(--txt)}
+
+/* v8.26 工作台：装备按槽位分栏 + 槽位筛选 */
+.slotchips{display:inline-flex;gap:5px;flex-wrap:wrap}
+.mini.on{background:var(--panel2);border-color:#56564f;color:var(--txt);font-weight:500}
+#workbenchPanel>.reccat{grid-column:1 / -1;font-size:12.5px;color:#e8d9b0;margin:14px 0 2px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+#workbenchPanel>.reccat:first-child{margin-top:2px}
+
+/* ============================================================
+ * v8.33 基地页：上下布局 — pagenav / fabDock / mapMain / savebar 纵向四栏
+ *   所有子元素都在 main#page-base 的 flex 流里，无 overlap
+ * ============================================================ */
+/* 基地页本身：flex 纵向四栏，撑满视口减去 body padding */
+main.page.on#page-base{display:flex;flex-direction:column;position:relative;z-index:2;height:calc(100vh - 24px - 52px);min-height:0;overflow:hidden}
+
+/* 页面导航：半透明底，与 header 风格一致 */
+/* 页面导航：v8.40 所有页面共享，风格与 header/fabdock 统一 */
+.pagenav{display:flex;gap:6px;padding:6px 12px;background:rgba(20,20,19,.88);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.pagenav .pb{background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:9px;padding:6px 13px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+.pagenav .pb:hover{color:var(--txt);border-color:#3f3f3c}
+.pagenav .pb.on{background:var(--panel2);color:var(--txt);border-color:#56564f;font-weight:500}
+.pagenav .pb .pbadge{font-size:10px;line-height:1;padding:3px 6px;border-radius:9px;background:rgba(29,158,117,.2);color:#5DCAA5;font-weight:500}
+.pagenav .pb .pbadge.warn{background:rgba(239,159,39,.2);color:#FAC775}
+
+/* 顶部操作按钮坞：左对齐，卡片等高但宽度自适应 */
+.fabdock{position:relative;z-index:6;display:flex;flex-direction:row;gap:6px;
+  padding:6px 12px;background:rgba(20,20,19,.88);border-bottom:1px solid var(--line);
+  align-items:stretch;justify-content:flex-start}
+.fab{height:34px;text-align:left;overflow:hidden;
+  background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+  color:var(--txt);padding:0 10px;cursor:pointer;
+  display:flex;flex-direction:column;justify-content:center;gap:1px;
+  font-family:inherit;transition:background .12s,border-color .12s;
+  box-shadow:0 1px 4px rgba(0,0,0,.25);align-items:stretch;
+  flex:0 0 auto;min-width:100px;max-width:180px}
+.fab:hover{background:var(--panel);border-color:#5aa7e8}
+.fab.on{background:#1e2a38;border-color:#5aa7e8}
+.fab .fname{font-weight:600;font-size:12.5px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fab .fsum{color:var(--dim);font-size:10.5px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 中间地图区：撑满剩余高度，overflow:hidden 防止内容溢出 */
+.mapmain{flex:1 1 auto;position:relative;overflow:hidden;background:#0b0d0e}
+.mapwrap{position:absolute;inset:0;width:100%;height:100%}
+.mapwrap svg{display:block;width:100%;height:100%}
+
+/* 左上角极简信息条（跟随地图，面板打开时自动隐藏） */
+.mapchip{position:absolute;top:8px;left:10px;z-index:4;display:flex;flex-direction:column;gap:4px;
+  pointer-events:none;max-width:min(340px,42vw)}
+.mapchip .mc{background:rgba(12,14,16,.7);border:1px solid var(--line);border-radius:6px;
+  padding:3px 8px;font-size:11.5px;color:#d8cfbd;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* 弹出面板（浮在中间地图区；top/bottom 由 JS 动态计算） */
+.pop{position:absolute;left:10px;z-index:7;display:none;width:min(560px,84vw);
+  overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.pop.on{display:block}
+.pophead{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:9px 12px;background:var(--panel2);border-bottom:1px solid var(--line);border-radius:12px 12px 0 0;
+  font-size:14px;font-weight:500;color:#e8d9b0}
+.popbody{padding:10px 12px 12px}
+.popbody #log{max-height:55vh}
+
+/* 底部存档栏 */
+.savebar{position:relative;z-index:5;display:flex;flex-direction:column;gap:6px;padding:8px 14px;
+  background:rgba(20,20,19,.88);border-top:1px solid var(--line);font-size:12.5px}
+.savebar .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.savebar .hint{color:var(--dim);font-size:11.5px}
+
+/* 设施卡片在弹出面板里走自适应网格 */
+#buildings{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px 10px}
+#buildings .bld{margin-bottom:0}
+@media(max-width:600px){#buildings{grid-template-columns:1fr}}
+
+/* 地图信息面板复用旧卡片样式 */
+.mapband-card{background:var(--panel2);border-radius:10px;padding:9px 11px}
+.mapband-cardhead{font-size:12px;color:var(--dim);margin-bottom:5px}
+
+/* ── 响应式：窗口高度不够时收缩顶栏资源项，让面板有更多空间 ── */
+@media(max-height:650px){
+  header{padding:6px 12px;gap:8px}
+  header .res{font-size:12px}
+  header .res b{font-size:13px}
+  header .res[title]:hover::after{content:attr(title)}
+  /* 只保留图标+数值，省略长描述文案（title 仍可 hover 看全文） */
+  header .res:not(:first-child):not(:last-child) span:only-child{display:none}
+  .mapchip{top:76px}
+  .pop{top:76px}
+  .fabdock{bottom:8px;right:8px}
+}
+@media(max-width:480px){
+  header .res{font-size:11px}
+  header .res b{font-size:12px}
+  .pop{width:96vw;left:2vw}
+  .fab{width:160px}
+}

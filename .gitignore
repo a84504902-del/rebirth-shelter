@@ -1,0 +1,23 @@
+# 存档与运行时数据（每人自己的进度，不入库）
+shelter.db
+shelter.db-shm
+shelter.db-wal
+server-log.txt
+存档备份*.json
+
+# 本地预览快照（page-preview 生成）
+预览-*.html
+
+# 开发期备份目录
+backups/
+
+# 诊断输出
+tools/reports/
+tools/hunt-*.txt
+tools/crash-out.txt
+tools/crash-steps.txt
+tools/node-procs.txt
+
+# Node
+node_modules/
+npm-debug.log*

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>废土世界地图 · 原型 v3（位图底图 + 矢量标注）</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:#080c0f; font-family:"Songti SC","SimSun","Noto Serif SC",serif; }
+  body { display:flex; align-items:center; justify-content:center; padding:24px; }
+  .wrap { width:min(96vw, 1240px); }
+  .cap { color:#c9b48a; font-size:13px; letter-spacing:.12em; margin:0 0 10px 2px; opacity:.85; }
+  .cap b { color:#f0a85a; font-weight:600; }
+  .stage {
+    position:relative; width:100%; aspect-ratio:1536/1024;
+    border:1px solid #3a2f22; border-radius:3px; overflow:hidden;
+    box-shadow:0 24px 70px rgba(0,0,0,.75), 0 0 0 6px rgba(20,14,9,.6);
+  }
+  .stage > img { width:100%; height:100%; display:block; }
+  .stage > svg { position:absolute; inset:0; width:100%; height:100%; }
+  /* 盖住 AI 水印（右下角） */
+  .wm {
+    position:absolute; right:0; bottom:0; width:30%; height:16%; pointer-events:none;
+    background:radial-gradient(circle at 100% 100%, rgba(8,12,15,.98), rgba(8,12,15,0) 72%);
+  }
+  .label { paint-order:stroke; }
+  .zname { font-weight:700; paint-order:stroke; }
+  .pname { paint-order:stroke; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="cap">重生避难所 · <b>废土世界地图</b> &nbsp;|&nbsp; AI 位图底图 + 矢量动态标注（原型 v3）</p>
+  <div class="stage">
+    <img src="./assets/map/map-base.png" alt="废土世界地图底图">
+    <svg viewBox="0 0 1536 1024" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="r1" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="5" result="n"/>
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="5"/>
+        </filter>
+        <radialGradient id="fog" cx="20%" cy="20%" r="90%">
+          <stop offset="0%" stop-color="#060a0d" stop-opacity=".92"/>
+          <stop offset="100%" stop-color="#060a0d" stop-opacity=".15"/>
+        </radialGradient>
+      </defs>
+
+      <!-- 区域大字（半透明压在地形上） -->
+      <g class="zname" font-size="52" fill="#f3e9d2" fill-opacity=".26" stroke="#120c06" stroke-width="2.5" stroke-opacity=".35">
+        <text x="880" y="360" transform="rotate(-5 880 360)">旧工业带</text>
+        <text x="1080" y="690" font-size="44" transform="rotate(3 1080 690)">幽能禁区</text>
+        <text x="700" y="770" font-size="40" transform="rotate(-2 700 770)">能源走廊</text>
+        <text x="360" y="590" font-size="36" transform="rotate(4 360 590)">家园废墟</text>
+      </g>
+
+      <!-- 地点：点 + 散落地名 -->
+      <g class="pname" font-size="21" fill="#f4ecda" stroke="#0e0a05" stroke-width="3.2">
+        <g><circle cx="470" cy="330" r="5.5" fill="#e9dcc0"/><text x="486" y="337">锈港</text></g>
+        <g><circle cx="392" cy="216" r="5.5" fill="#e9dcc0"/><text x="408" y="223">黑松林</text></g>
+        <g><circle cx="700" cy="642" r="5.5" fill="#e9dcc0"/><text x="716" y="649">盐沼哨站</text></g>
+        <g><circle cx="642" cy="422" r="5.5" fill="#e9dcc0"/><text x="658" y="429">断桥</text></g>
+        <g><circle cx="932" cy="540" r="5.5" fill="#e9dcc0"/><text x="948" y="547">辐射矿洞</text></g>
+        <g><circle cx="562" cy="470" r="5.5" fill="#e9dcc0"/><text x="578" y="477">废铁场</text></g>
+        <g><circle cx="640" cy="172" r="5.5" fill="#e9dcc0"/><text x="656" y="179">回声谷</text></g>
+        <g><circle cx="1012" cy="272" r="5.5" fill="#e9dcc0"/><text x="1028" y="279">冰封仓库</text></g>
+        <g><circle cx="332" cy="182" r="5.5" fill="#e9dcc0"/><text x="348" y="189">灯塔</text></g>
+      </g>
+
+      <!-- 避难所 -->
+      <g class="label">
+        <circle cx="762" cy="560" r="22" fill="none" stroke="#e8a04a" stroke-width="2.4" opacity=".75"/>
+        <circle cx="762" cy="560" r="12" fill="#e8a04a" stroke="#fff8ea" stroke-width="2.6"/>
+        <text x="762" y="612" font-size="26" font-weight="700" fill="#f6b25c" stroke="#1a1006" stroke-width="4" text-anchor="middle">避难所</text>
+      </g>
+
+      <!-- 天灾收缩圈 -->
+      <g filter="url(#r1)">
+        <circle cx="892" cy="468" r="104" fill="none" stroke="#d24b3a" stroke-width="2.6" stroke-dasharray="9 7" opacity=".9"/>
+        <circle cx="892" cy="468" r="6" fill="#d24b3a"/>
+        <text x="892" y="336" font-size="20" fill="#ee7458" stroke="#1a0805" stroke-width="3.4" text-anchor="middle" class="label">天灾逼近</text>
+      </g>
+
+      <!-- 战争迷雾（右上未探索区） -->
+      <g>
+        <rect x="1180" y="0" width="356" height="300" fill="url(#fog)"/>
+        <text x="1330" y="150" font-size="26" fill="#c3d0d6" stroke="#0a0f13" stroke-width="3" text-anchor="middle" opacity=".8" transform="rotate(-7 1330 150)" class="label">未探索</text>
+        <text x="1330" y="182" font-size="15" fill="#8d9ba3" text-anchor="middle" opacity=".7">迷雾笼罩 · 随探索揭开</text>
+      </g>
+
+      <!-- 罗盘 -->
+      <g transform="translate(1418,178)" opacity=".9">
+        <circle r="42" fill="rgba(10,14,18,.35)" stroke="#a8956b" stroke-width="1.6"/>
+        <circle r="30" fill="none" stroke="#8a7a5c" stroke-width=".8"/>
+        <path d="M0 -38 L9 0 L0 38 L-9 0 Z" fill="#a48f66"/>
+        <path d="M0 -38 L9 0 L0 0 Z" fill="#e6d8b6"/>
+        <text x="0" y="-48" font-size="16" fill="#e6d8b6" text-anchor="middle">N</text>
+      </g>
+
+      <!-- 比例尺 -->
+      <g transform="translate(96,952)" opacity=".85">
+        <line x1="0" y1="0" x2="170" y2="0" stroke="#e6d8b6" stroke-width="2.4"/>
+        <line x1="0" y1="-7" x2="0" y2="7" stroke="#e6d8b6" stroke-width="2.4"/>
+        <line x1="85" y1="-5" x2="85" y2="5" stroke="#e6d8b6" stroke-width="1.6"/>
+        <line x1="170" y1="-7" x2="170" y2="7" stroke="#e6d8b6" stroke-width="2.4"/>
+        <text x="0" y="-14" font-size="14" fill="#e6d8b6">0</text>
+        <text x="150" y="-14" font-size="14" fill="#e6d8b6">100 km</text>
+      </g>
+
+      <!-- 图例（同时盖住水印） -->
+      <g transform="translate(1246,846)" font-size="16" fill="#e6d8b6" class="label" stroke="#0a0f13" stroke-width="2.6">
+        <rect x="-16" y="-28" width="240" height="118" fill="rgba(8,12,15,.62)" stroke="#6b5a3c" stroke-width="1"/>
+        <circle cx="4" cy="-4" r="9" fill="#e8a04a"/><text x="24" y="2">避难所 / 主角</text>
+        <circle cx="4" cy="26" r="6" fill="#e9dcc0"/><text x="24" y="32">已探索地点</text>
+        <circle cx="4" cy="56" r="6" fill="#d24b3a"/><text x="24" y="62">天灾 / 危险区</text>
+      </g>
+    </svg>
+    <div class="wm"></div>
+  </div>
+</div>
+</body>
+</html>
